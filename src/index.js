@@ -74,6 +74,10 @@ document.addEventListener("DOMContentLoaded", () => {
   /************  EVENT LISTENERS  ************/
   nextButton.addEventListener("click", nextButtonHandler);
 
+  // Add restart button event listener
+  const restartButton = document.querySelector("#restartButton");
+  restartButton.addEventListener("click", restartQuiz);
+
   /************  FUNCTIONS  ************/
   // showQuestion() - Displays the current question and its choices
   // nextButtonHandler() - Handles the click on the next button
@@ -168,5 +172,30 @@ document.addEventListener("DOMContentLoaded", () => {
     
     // 3. Update the result container (div#result) inner text to show the number of correct answers out of total questions
     resultContainer.innerText = `You scored ${quiz.correctAnswers} out of ${quiz.questions.length} correct answers!`;
+  }
+
+  function restartQuiz() {
+    // Hide the end view
+    endView.style.display = "none";
+    
+    // Show the quiz view
+    quizView.style.display = "block";
+    
+    // Reset the quiz
+    quiz.currentQuestionIndex = 0;
+    quiz.correctAnswers = 0;
+    quiz.timeRemaining = quiz.timeLimit; // Reset time to initial value
+    quiz.shuffleQuestions();
+    
+    // Update the timer display to show initial time
+    const minutes = Math.floor(quiz.timeRemaining / 60).toString().padStart(2, "0");
+    const seconds = (quiz.timeRemaining % 60).toString().padStart(2, "0");
+    timeRemainingContainer.innerText = `${minutes}:${seconds}`;
+    
+    // Start the timer countdown again
+    startTimer();
+    
+    // Show the first question
+    showQuestion();
   }
 });
